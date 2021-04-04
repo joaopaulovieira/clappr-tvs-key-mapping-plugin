@@ -1,0 +1,79 @@
+{
+  "name": "@joaopaulo.vieira/clappr-tvs-key-mapping-plugin",
+  "version": "1.0.0",
+  "description": "Maps smart TVs remote control keys to a common pattern for Clappr.",
+  "keywords": [
+    "clappr",
+    "smarttv",
+    "keys",
+    "controls",
+    "observer",
+    "watcher"
+  ],
+  "homepage": "https://github.com/joaopaulovieira/clappr-tvs-key-mapping-plugin",
+  "bugs": {
+    "url": "https://github.com/joaopaulovieira/clappr-tvs-key-mapping-plugin/issues",
+    "email": "vieira.joaopaulo.91@gmail.com"
+  },
+  "license": "BSD-3-Clause",
+  "author": {
+    "name": "Joao Paulo Vieira",
+    "email": "vieira.joaopaulo.91@gmail.com"
+  },
+  "files": [
+    "/dist",
+    "/src"
+  ],
+  "main": "dist/clappr-tvs-key-mapping-plugin.js",
+  "module": "dist/clappr-tvs-key-mapping-plugin.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:joaopaulovieira/clappr-tvs-key-mapping-plugin.git"
+  },
+  "scripts": {
+    "bundle-check": "ANALYZE_BUNDLE=true rollup --config",
+    "build": "rollup --config",
+    "release": "MINIMIZE=true rollup --config",
+    "start": "DEV=true rollup --config --watch",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "jest --coverage --silent",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
+    "test:coverage": "open coverage/lcov-report/index.html"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.14",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@clappr/core": "^0.4.18",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "babel-jest": "^26.6.3",
+    "coveralls": "^3.1.0",
+    "eslint": "^7.23.0",
+    "jest": "^26.6.3",
+    "jest-mock-console": "^1.0.1",
+    "rollup": "^2.44.0",
+    "rollup-plugin-filesize": "^9.1.1",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-serve": "^1.1.0",
+    "rollup-plugin-sizes": "^1.0.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-visualizer": "^5.3.0"
+  },
+  "peerDependencies": {
+    "@clappr/core": "^0.4.18"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not ie <= 11"
+  ]
+}
