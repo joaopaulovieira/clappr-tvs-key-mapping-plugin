@@ -9,6 +9,7 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
   constructor(core) {
     super(core)
     this.start = this.start.bind(this)
+    this._triggerKeyDownEvents = this._triggerKeyDownEvents.bind(this)
 
     this._deviceName = this.options.tvsKeyMapping && this.options.tvsKeyMapping.deviceToMap
 
@@ -22,5 +23,9 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
     if (!KeyMap[device]) return Log.warn(this.name, 'The device name is not valid. The plugin will not fire events as expected.')
 
     this._deviceName = device
+    document.addEventListener('keydown', this._triggerKeyDownEvents)
+  }
+
+  _triggerKeyDownEvents(ev) {
   }
 }

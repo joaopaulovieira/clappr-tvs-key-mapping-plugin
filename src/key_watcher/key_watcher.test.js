@@ -90,5 +90,13 @@ describe('TVsKeyMappingPlugin', function() {
 
       expect(plugin._deviceName).toEqual('browser')
     })
+
+    test('adds _triggerKeyDownEvents method as a callback of keydown event listener on the document', () => {
+      jest.spyOn(this.plugin, '_triggerKeyDownEvents')
+      this.plugin.start('browser')
+      document.dispatchEvent(new Event('keydown'))
+
+      expect(this.plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
+    })
   })
 })
