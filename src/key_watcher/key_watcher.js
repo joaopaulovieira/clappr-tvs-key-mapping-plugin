@@ -27,6 +27,7 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
   }
 
   _triggerKeyDownEvents(ev) {
+    const keyName = this._getKeyNameFromEvent(ev)
   }
 
   _getKeyNameFromEvent(ev) {

@@ -100,6 +100,15 @@ describe('TVsKeyMappingPlugin', function() {
     })
   })
 
+  describe('_triggerKeyDownEvents method', () => {
+    test('calls _getKeyNameFromEvent method', () => {
+      jest.spyOn(this.plugin, '_getKeyNameFromEvent')
+      this.plugin._triggerKeyDownEvents(new Event('keydown'))
+
+      expect(this.plugin._getKeyNameFromEvent).toHaveBeenCalledTimes(1)
+    })
+  })
+
   describe('_getKeyNameFromEvent method', () => {
     test('returns one key name accordingly the received keyboard event if is a mapped device', () => {
       const receivedKeyName1 = this.plugin._getKeyNameFromEvent(new KeyboardEvent('keydown', { keyCode: 13 }))
