@@ -190,4 +190,15 @@ describe('TVsKeyMappingPlugin', function() {
       expect(this.plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
     })
   })
+
+  describe('enableLog method', () => {
+    test('adds _onPressedKey method as a callback of keydown event listener on the document', () => {
+      const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
+      jest.spyOn(plugin, '_onPressedKey')
+      plugin.enableLog()
+      document.dispatchEvent(new Event('keydown'))
+
+      expect(plugin._onPressedKey).toHaveBeenCalledTimes(1)
+    })
+  })
 })

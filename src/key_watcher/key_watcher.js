@@ -12,7 +12,9 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
     super(core)
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
+    this.enableLog = this.enableLog.bind(this)
     this._triggerKeyDownEvents = this._triggerKeyDownEvents.bind(this)
+    this._onPressedKey = this._onPressedKey.bind(this)
 
     this._deviceName = this.options.tvsKeyMapping && this.options.tvsKeyMapping.deviceToMap
 
@@ -46,5 +48,12 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
 
   stop() {
     document.removeEventListener('keydown', this._triggerKeyDownEvents)
+  }
+
+  enableLog() {
+    document.addEventListener('keydown', this._onPressedKey)
+  }
+
+  _onPressedKey(ev) {
   }
 }
