@@ -107,6 +107,17 @@ describe('TVsKeyMappingPlugin', function() {
 
       expect(this.plugin._getKeyNameFromEvent).toHaveBeenCalledTimes(1)
     })
+
+    test('logs a warn message if _getKeyNameFromEvent method returns one invalid key name', () => {
+      jest.spyOn(this.plugin, '_getKeyNameFromEvent').mockReturnValueOnce(undefined)
+      this.plugin._triggerKeyDownEvents(new Event('keydown'))
+
+      expect(console.log).toHaveBeenCalledWith(
+        LOG_WARN_HEAD_MESSAGE,
+        LOG_WARN_STYLE,
+        'The key code is not mapped. The plugin will not fire events as expected.',
+      )
+    })
   })
 
   describe('_getKeyNameFromEvent method', () => {

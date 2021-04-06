@@ -28,6 +28,8 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
 
   _triggerKeyDownEvents(ev) {
     const keyName = this._getKeyNameFromEvent(ev)
+
+    if (typeof keyName === 'undefined') return Log.warn(this.name, 'The key code is not mapped. The plugin will not fire events as expected.')
   }
 
   _getKeyNameFromEvent(ev) {
