@@ -7,6 +7,8 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
   get supportedVersion() { return { min: version } }
 
   constructor(core) {
+    Events.register('CORE_SMART_TV_KEY_PRESSED')
+    Events.register('CONTAINER_SMART_TV_KEY_PRESSED')
     super(core)
     this.start = this.start.bind(this)
     this._triggerKeyDownEvents = this._triggerKeyDownEvents.bind(this)
@@ -30,6 +32,8 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
     const keyName = this._getKeyNameFromEvent(ev)
 
     if (typeof keyName === 'undefined') return Log.warn(this.name, 'The key code is not mapped. The plugin will not fire events as expected.')
+
+    this.core.trigger(Events.Custom.CORE_SMART_TV_KEY_PRESSED, keyName)
   }
 
   _getKeyNameFromEvent(ev) {

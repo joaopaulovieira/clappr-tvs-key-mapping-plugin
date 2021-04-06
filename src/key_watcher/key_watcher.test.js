@@ -41,6 +41,14 @@ describe('TVsKeyMappingPlugin', function() {
   })
 
   describe('constructor', () => {
+    test('register custom event to trigger on core scope', () => {
+      expect(Events.Custom.CORE_SMART_TV_KEY_PRESSED).toBeDefined()
+    })
+
+    test('register custom event to trigger on container scope', () => {
+      expect(Events.Custom.CONTAINER_SMART_TV_KEY_PRESSED).toBeDefined()
+    })
+
     test('saves options.tvsKeyMapping.deviceToMap reference internally', () => {
       const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'xpto' } })
 
@@ -117,6 +125,16 @@ describe('TVsKeyMappingPlugin', function() {
         LOG_WARN_STYLE,
         'The key code is not mapped. The plugin will not fire events as expected.',
       )
+    })
+
+    test('triggers CORE_SMART_TV_KEY_PRESSED custom event at core scope', () => {
+      const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
+      const cb = jest.fn()
+      plugin.listenToOnce(plugin.core, Events.Custom.CORE_SMART_TV_KEY_PRESSED, cb)
+      plugin._triggerKeyDownEvents(new KeyboardEvent('keydown', { keyCode: 13 }))
+
+      expect(cb).toHaveBeenCalledTimes(1)
+      expect(cb).toHaveBeenCalledWith('ENTER')
     })
   })
 
