@@ -11,6 +11,7 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
     Events.register('CONTAINER_SMART_TV_KEY_PRESSED')
     super(core)
     this.start = this.start.bind(this)
+    this.stop = this.stop.bind(this)
     this._triggerKeyDownEvents = this._triggerKeyDownEvents.bind(this)
 
     this._deviceName = this.options.tvsKeyMapping && this.options.tvsKeyMapping.deviceToMap
@@ -41,5 +42,9 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
     const keyMapForDevice = KeyMap[this._deviceName]
     const keyName = keyMapForDevice && keyMapForDevice[ev.keyCode]
     return keyName
+  }
+
+  stop() {
+    document.removeEventListener('keydown', this._triggerKeyDownEvents)
   }
 }

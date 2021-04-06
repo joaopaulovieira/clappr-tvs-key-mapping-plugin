@@ -175,4 +175,19 @@ describe('TVsKeyMappingPlugin', function() {
       expect(receivedKeyName3).toBeUndefined()
     })
   })
+
+  describe('stop method', () => {
+    test('removes keydown event listener from document', () => {
+      jest.spyOn(this.plugin, '_triggerKeyDownEvents')
+      this.plugin.start('browser')
+      document.dispatchEvent(new Event('keydown'))
+
+      expect(this.plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
+
+      this.plugin.stop()
+      document.dispatchEvent(new Event('keydown'))
+
+      expect(this.plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
+    })
+  })
 })
