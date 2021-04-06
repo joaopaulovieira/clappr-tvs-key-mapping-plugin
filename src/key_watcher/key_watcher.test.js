@@ -32,6 +32,14 @@ describe('TVsKeyMappingPlugin', function() {
     this.plugin = response.plugin
   })
 
+  test('is loaded on core plugins array', () => {
+    expect(this.core.getPlugin(this.plugin.name).name).toEqual('tvs_key_mapping')
+  })
+
+  test('is compatible with the latest Clappr core version', () => {
+    expect(this.core.getPlugin(this.plugin.name).supportedVersion).toEqual({ min: version })
+  })
+
   describe('constructor', () => {
     test('saves options.tvsKeyMapping.deviceToMap reference internally', () => {
       const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'xpto' } })
