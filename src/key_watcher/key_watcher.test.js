@@ -252,4 +252,27 @@ describe('TVsKeyMappingPlugin', function() {
       expect(plugin._onPressedKey).toHaveBeenCalledTimes(1)
     })
   })
+
+  describe('destroy method', () => {
+    test('is called when Core is destroyed too', () => {
+      jest.spyOn(this.plugin, 'destroy')
+      this.core.destroy()
+
+      expect(this.plugin.destroy).toHaveBeenCalled()
+    })
+
+    test('calls stop method', () => {
+      jest.spyOn(this.plugin, 'stop')
+      this.plugin.destroy()
+
+      expect(this.plugin.stop).toHaveBeenCalledTimes(1)
+    })
+
+    test('calls disableLog method', () => {
+      jest.spyOn(this.plugin, 'disableLog')
+      this.plugin.destroy()
+
+      expect(this.plugin.disableLog).toHaveBeenCalledTimes(1)
+    })
+  })
 })

@@ -63,4 +63,10 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
   disableLog() {
     document.removeEventListener('keydown', this._onPressedKey)
   }
+
+  destroy() {
+    this.stop()
+    this.disableLog()
+    super.destroy()
+  }
 }
