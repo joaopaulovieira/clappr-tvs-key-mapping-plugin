@@ -74,6 +74,16 @@ describe('TVsKeyMappingPlugin', function() {
       )
     })
 
+    test('logs a warn message if receives a invalid device name', () => {
+      this.plugin.start('xpto')
+
+      expect(console.log).toHaveBeenCalledWith(
+        LOG_WARN_HEAD_MESSAGE,
+        LOG_WARN_STYLE,
+        'The device name is not valid. The plugin will not fire events as expected.',
+      )
+    })
+
     test('updates options.tvsKeyMapping.deviceToMap internal reference with received value', () => {
       const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'xpto' } })
       plugin.start('browser')

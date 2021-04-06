@@ -1,4 +1,5 @@
 import { CorePlugin, Events, Log, version } from '@clappr/core'
+import { KeyMap } from '../keys_mapping/map'
 
 export default class TVsKeyMappingPlugin extends CorePlugin {
   get name() { return 'tvs_key_mapping' }
@@ -18,6 +19,8 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
 
   start(device) {
     if (!device) return Log.warn(this.name, 'No one device name was received. The plugin will not fire events as expected.')
+    if (!KeyMap[device]) return Log.warn(this.name, 'The device name is not valid. The plugin will not fire events as expected.')
+
     this._deviceName = device
   }
 }
