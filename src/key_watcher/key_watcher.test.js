@@ -236,4 +236,20 @@ describe('TVsKeyMappingPlugin', function() {
       )
     })
   })
+
+  describe('disableLog method', () => {
+    test('removes keydown event listener from document', () => {
+      const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
+      jest.spyOn(plugin, '_onPressedKey')
+      plugin.enableLog()
+      document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 13 }))
+
+      expect(plugin._onPressedKey).toHaveBeenCalledTimes(1)
+
+      plugin.disableLog()
+      document.dispatchEvent(new KeyboardEvent('keydown', { keyCode: 13 }))
+
+      expect(plugin._onPressedKey).toHaveBeenCalledTimes(1)
+    })
+  })
 })

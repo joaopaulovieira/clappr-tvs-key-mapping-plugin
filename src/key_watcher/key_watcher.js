@@ -13,6 +13,7 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
     this.enableLog = this.enableLog.bind(this)
+    this.disableLog = this.disableLog.bind(this)
     this._triggerKeyDownEvents = this._triggerKeyDownEvents.bind(this)
     this._onPressedKey = this._onPressedKey.bind(this)
 
@@ -57,5 +58,9 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
 
   _onPressedKey(ev) {
     Log.info(this.name, `The key pressed has the code ${ev.keyCode} and is mapped to the ${this._getKeyNameFromEvent(ev)} value.`)
+  }
+
+  disableLog() {
+    document.removeEventListener('keydown', this._onPressedKey)
   }
 }
