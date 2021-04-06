@@ -56,5 +56,6 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
   }
 
   _onPressedKey(ev) {
+    Log.info(this.name, `The key pressed has the code ${ev.keyCode} and is mapped to the ${this._getKeyNameFromEvent(ev)} value.`)
   }
 }

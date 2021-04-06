@@ -16,7 +16,9 @@ const setupTest = (options = {}, fullSetup = false) => {
   return response
 }
 
+const LOG_INFO_HEAD_MESSAGE = '%c[info][tvs_key_mapping]'
 const LOG_WARN_HEAD_MESSAGE = '%c[warn][tvs_key_mapping]'
+const LOG_INFO_STYLE = 'color: #006600;font-weight: bold; font-size: 13px;'
 const LOG_WARN_STYLE = 'color: #ff8000;font-weight: bold; font-size: 13px;'
 
 describe('TVsKeyMappingPlugin', function() {
@@ -210,6 +212,28 @@ describe('TVsKeyMappingPlugin', function() {
       document.dispatchEvent(new Event('keydown'))
 
       expect(plugin._onPressedKey).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('_onPressedKey method', () => {
+    test('logs a info message containing the key code and key name of received keyboard event', () => {
+      const { plugin: plugin1 } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
+      plugin1._onPressedKey(new KeyboardEvent('keydown', { keyCode: 13 }))
+
+      expect(console.log).toHaveBeenCalledWith(
+        LOG_INFO_HEAD_MESSAGE,
+        LOG_INFO_STYLE,
+        'The key pressed has the code 13 and is mapped to the ENTER value.',
+      )
+
+      const { plugin: plugin2 } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
+      plugin2._onPressedKey(new KeyboardEvent('keydown', { keyCode: 999 }))
+
+      expect(console.log).toHaveBeenCalledWith(
+        LOG_INFO_HEAD_MESSAGE,
+        LOG_INFO_STYLE,
+        'The key pressed has the code 999 and is mapped to the undefined value.',
+      )
     })
   })
 })
