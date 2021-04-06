@@ -31,6 +31,7 @@ describe('TVsKeyMappingPlugin', function() {
     this.playback = this.container.playback
     this.plugin = response.plugin
   })
+  afterEach(() => this.restoreConsole())
 
   test('is loaded on core plugins array', () => {
     expect(this.core.getPlugin(this.plugin.name).name).toEqual('tvs_key_mapping')
@@ -192,6 +193,16 @@ describe('TVsKeyMappingPlugin', function() {
   })
 
   describe('enableLog method', () => {
+    test('logs a warn message if _deviceName is undefined', () => {
+      this.plugin.enableLog()
+
+      expect(console.log).toHaveBeenCalledWith(
+        LOG_WARN_HEAD_MESSAGE,
+        LOG_WARN_STYLE,
+        'No one device name was configured. Logging is not enabled.',
+      )
+    })
+
     test('adds _onPressedKey method as a callback of keydown event listener on the document', () => {
       const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
       jest.spyOn(plugin, '_onPressedKey')

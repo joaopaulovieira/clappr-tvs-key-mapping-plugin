@@ -51,6 +51,7 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
   }
 
   enableLog() {
+    if (!this._deviceName) return Log.warn(this.name, 'No one device name was configured. Logging is not enabled.')
     document.addEventListener('keydown', this._onPressedKey)
   }
 
