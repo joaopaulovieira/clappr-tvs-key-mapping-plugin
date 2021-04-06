@@ -17,6 +17,7 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
   }
 
   start(device) {
+    if (!device) return Log.warn(this.name, 'No one device name was received. The plugin will not fire events as expected.')
     this._deviceName = device
   }
 }

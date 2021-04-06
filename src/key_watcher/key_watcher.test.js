@@ -64,6 +64,16 @@ describe('TVsKeyMappingPlugin', function() {
   })
 
   describe('start method', () => {
+    test('logs a warn message if device name is not received', () => {
+      this.plugin.start()
+
+      expect(console.log).toHaveBeenCalledWith(
+        LOG_WARN_HEAD_MESSAGE,
+        LOG_WARN_STYLE,
+        'No one device name was received. The plugin will not fire events as expected.',
+      )
+    })
+
     test('updates options.tvsKeyMapping.deviceToMap internal reference with received value', () => {
       const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'xpto' } })
       plugin.start('browser')
