@@ -62,3 +62,13 @@ describe('TVsKeyMappingPlugin', function() {
       )
     })
   })
+
+  describe('start method', () => {
+    test('updates options.tvsKeyMapping.deviceToMap internal reference with received value', () => {
+      const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'xpto' } })
+      plugin.start('browser')
+
+      expect(plugin._deviceName).toEqual('browser')
+    })
+  })
+})

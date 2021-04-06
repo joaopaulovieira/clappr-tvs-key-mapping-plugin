@@ -17,5 +17,6 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
   }
 
   start(device) {
+    this._deviceName = device
   }
 }
