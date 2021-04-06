@@ -28,4 +28,10 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
 
   _triggerKeyDownEvents(ev) {
   }
+
+  _getKeyNameFromEvent(ev) {
+    const keyMapForDevice = KeyMap[this._deviceName]
+    const keyName = keyMapForDevice && keyMapForDevice[ev.keyCode]
+    return keyName
+  }
 }

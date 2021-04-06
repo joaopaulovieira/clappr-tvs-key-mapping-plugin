@@ -99,4 +99,22 @@ describe('TVsKeyMappingPlugin', function() {
       expect(this.plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
     })
   })
+
+  describe('_getKeyNameFromEvent method', () => {
+    test('returns one key name accordingly the received keyboard event if is a mapped device', () => {
+      const receivedKeyName1 = this.plugin._getKeyNameFromEvent(new KeyboardEvent('keydown', { keyCode: 13 }))
+
+      expect(receivedKeyName1).toBeUndefined()
+
+      const { plugin: plugin1 } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
+      const receivedKeyName2 = plugin1._getKeyNameFromEvent(new KeyboardEvent('keydown', { keyCode: 13 }))
+
+      expect(receivedKeyName2).toEqual('ENTER')
+
+      const { plugin: plugin2 } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
+      const receivedKeyName3 = plugin2._getKeyNameFromEvent(new KeyboardEvent('keydown', { keyCode: 999 }))
+
+      expect(receivedKeyName3).toBeUndefined()
+    })
+  })
 })
