@@ -19,7 +19,7 @@
 ### :mage: One plugin to rule them all (remote controls)
 Each smart TV device has your own remote control key code. With this plugin, you can guarantee that the wanted action for one button is consistent with all mapped devices. 
 
-### :clappr: Clappr events FTW!
+### :clapper: Clappr events FTW!
 When the key of the mapped device is pressed, the plugin triggers one Clappr event with the key name on `core`(`CORE_SMART_TV_KEY_PRESSED`) and `container`(`CONTAINER_SMART_TV_KEY_PRESSED`) scope. This flow allows you to listen to one of those events a do what you want based on the returned key name.
 
 ### :mag: `console.log` for the rescue
