@@ -69,6 +69,7 @@ This config is mandatory for the plugin. The name needs to be one of the current
 | `browser` | This option is for test the plugin on a desktop device in any web browser. |
 |`samsung_tizen`| Samsung smart TVs with Tizen OS (>= 2015 launch year). |
 |`samsung_orsay`| Samsung smart TVs with Orsay OS (<= 2014 launch year). |
+|`lg_webos`| LG smart TVs with WebOS (>= 2014 launch year). |
 |`panasonic`| Panasonic smart TVs. |
 
 ## API Documentation
