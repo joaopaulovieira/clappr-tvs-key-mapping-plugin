@@ -1,9 +1,10 @@
-<!-- [![](https://data.jsdelivr.com/v1/package/npm/clappr-tvs-key-mapping-plugin/badge)](https://www.jsdelivr.com/package/npm/clappr-tvs-key-mapping-plugin)
-[![](https://img.shields.io/npm/v/clappr-tvs-key-mapping-plugin.svg?style=flat-square)](https://npmjs.org/package/clappr-tvs-key-mapping-plugin)
-[![](https://img.shields.io/npm/dt/clappr-tvs-key-mapping-plugin.svg?style=flat-square)](https://npmjs.org/package/clappr-tvs-key-mapping-plugin)
-[![npm bundle size](https://img.shields.io/bundlephobia/min/clappr-tvs-key-mapping-plugin?style=flat-square)](https://bundlephobia.com/result?p=clappr-tvs-key-mapping-plugin) -->
-![Coveralls github](https://img.shields.io/coveralls/github/joaopaulovieira/clappr-tvs-key-mapping-plugin?style=flat-square)
+[![](https://data.jsdelivr.com/v1/package/npm/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin/badge)](https://npmjs.org/package/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin)
+[![](https://img.shields.io/npm/v/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin.svg?style=flat-square)](https://npmjs.org/package/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin)
+[![](https://img.shields.io/npm/dt/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin.svg?style=flat-square)](https://npmjs.org/package/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin)
+[![npm bundle size](https://img.shields.io/bundlephobia/min/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin?style=flat-square)](https://bundlephobia.com/result?p=@joaopaulo.vieira/clappr-tvs-key-mapping-plugin)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 ![Travis (.com)](https://img.shields.io/travis/com/joaopaulovieira/clappr-tvs-key-mapping-plugin?style=flat-square)
+![Coveralls github](https://img.shields.io/coveralls/github/joaopaulovieira/clappr-tvs-key-mapping-plugin?style=flat-square)
 [![](https://img.shields.io/github/license/joaopaulovieira/clappr-context-menu-plugin?style=flat-square)](https://github.com/joaopaulovieira/clappr-context-menu-plugin/blob/master/LICENSE)
 
 <h1 align=center>Clappr TVs key mapping plugin</h1>
