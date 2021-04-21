@@ -37,8 +37,9 @@ export default class TVsKeyMappingPlugin extends CorePlugin {
 
     if (typeof keyName === 'undefined') return Log.warn(this.name, 'The key code is not mapped. The plugin will not fire events as expected.')
 
-    this.core.trigger(Events.Custom.CORE_SMART_TV_KEY_PRESSED, keyName)
-    this.core.activeContainer && this.core.activeContainer.trigger(Events.Custom.CONTAINER_SMART_TV_KEY_PRESSED, keyName)
+    this.core.trigger(Events.Custom.CORE_SMART_TV_KEY_PRESSED, keyName, { keyName, keyEvent: ev })
+    this.core.activeContainer
+      && this.core.activeContainer.trigger(Events.Custom.CONTAINER_SMART_TV_KEY_PRESSED, keyName, { keyName, keyEvent: ev })
   }
 
   _getKeyNameFromEvent(ev) {

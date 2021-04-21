@@ -134,10 +134,11 @@ describe('TVsKeyMappingPlugin', function() {
       const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
       const cb = jest.fn()
       plugin.listenToOnce(plugin.core, Events.Custom.CORE_SMART_TV_KEY_PRESSED, cb)
-      plugin._triggerKeyDownEvents(new KeyboardEvent('keydown', { keyCode: 13 }))
+      const keyEvent = new KeyboardEvent('keydown', { keyCode: 13 })
+      plugin._triggerKeyDownEvents(keyEvent)
 
       expect(cb).toHaveBeenCalledTimes(1)
-      expect(cb).toHaveBeenCalledWith('ENTER')
+      expect(cb).toHaveBeenCalledWith('ENTER', { keyName: 'ENTER', keyEvent })
     })
 
     test('triggers CONTAINER_SMART_TV_KEY_PRESSED custom event at container scope', () => {
@@ -145,17 +146,19 @@ describe('TVsKeyMappingPlugin', function() {
       plugin.core.activeContainer = container
       const cb = jest.fn()
       plugin.listenToOnce(container, Events.Custom.CONTAINER_SMART_TV_KEY_PRESSED, cb)
-      plugin._triggerKeyDownEvents(new KeyboardEvent('keydown', { keyCode: 13 }))
+      const keyEvent = new KeyboardEvent('keydown', { keyCode: 13 })
+      plugin._triggerKeyDownEvents(keyEvent)
 
       expect(cb).toHaveBeenCalledTimes(1)
-      expect(cb).toHaveBeenCalledWith('ENTER')
+      expect(cb).toHaveBeenCalledWith('ENTER', { keyName: 'ENTER', keyEvent })
     })
 
     test('dont\'t trigger CONTAINER_SMART_TV_KEY_PRESSED custom event if core.activeContainer doesn\'t exists', () => {
       const { plugin, container } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } }, true)
       const cb = jest.fn()
       plugin.listenToOnce(container, Events.Custom.CONTAINER_SMART_TV_KEY_PRESSED, cb)
-      plugin._triggerKeyDownEvents(new KeyboardEvent('keydown', { keyCode: 13 }))
+      const keyEvent = new KeyboardEvent('keydown', { keyCode: 13 })
+      plugin._triggerKeyDownEvents(keyEvent)
 
       expect(cb).not.toHaveBeenCalled()
     })
