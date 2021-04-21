@@ -13,11 +13,14 @@ var onReadyCallback = function() {
   });
 };
 
+var searchParams;
+window.URLSearchParams && (searchParams = new window.URLSearchParams(window.location.search));
+
 var player = new Clappr.Player({
-  source: 'http://clappr.io/highline.mp4',
-  height: '320px',
-  width: '640px',
-  tvsKeyMapping: { deviceToMap: 'browser' },
+  source: searchParams && searchParams.get('source') || 'http://clappr.io/highline.mp4',
+  height: searchParams && searchParams.get('height') || '320px',
+  width: searchParams && searchParams.get('width') || '640px',
+  tvsKeyMapping: { deviceToMap: searchParams && searchParams.get('deviceToMap') || 'browser' },
   playback: { controls: true },
   plugins: [window.TVsKeyMappingPlugin.Watcher],
   events: { onReady: onReadyCallback },
