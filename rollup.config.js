@@ -1,7 +1,6 @@
 import { createBabelInputPluginFactory } from '@rollup/plugin-babel'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import livereload from 'rollup-plugin-livereload'
 import serve from 'rollup-plugin-serve'
 import filesize from 'rollup-plugin-filesize'
 import size from 'rollup-plugin-sizes'
@@ -22,7 +21,6 @@ const plugins = [
   size(),
   filesize(),
   dev && serve({ contentBase: ['dist', 'public'], host: '0.0.0.0', port: '8080' }),
-  dev && livereload({ watch: ['dist', 'public'] }),
   analyzeBundle && visualize({ open: true }),
 ]
 
