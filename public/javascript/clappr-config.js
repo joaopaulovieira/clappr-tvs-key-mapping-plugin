@@ -1,9 +1,17 @@
 /* eslint-disable */
 Clappr.Log.setLevel(Clappr.Log.LEVEL_INFO)
 
-const onReadyCallback = function() {
-  this.core.listenTo(this.core, Clappr.Events.Custom.CORE_SMART_TV_KEY_PRESSED, keyName => Clappr.Log.info('keyName', keyName))
-}
+var onReadyCallback = function() {
+  var _hideTimeout;
+
+  this.core.listenTo(this.core, Clappr.Events.Custom.CORE_SMART_TV_KEY_PRESSED, function(_, data) {
+    Clappr.Log.info('keyName', data.keyName);
+    clearTimeout(_hideTimeout);
+    document.querySelector('.snackbar').innerText = 'The key pressed has the code ' + data.keyEvent.keyCode + ' and is mapped to the "' + data.keyName + '" value.';
+    document.querySelector('.snackbar').className += ' show';
+    _hideTimeout = setTimeout(function() { document.querySelector('.snackbar').className = 'snackbar' }, 3000);
+  });
+};
 
 var player = new Clappr.Player({
   source: 'http://clappr.io/highline.mp4',
