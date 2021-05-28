@@ -1,4 +1,4 @@
-[![](https://data.jsdelivr.com/v1/package/npm/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin/badge)](https://npmjs.org/package/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin)
+[![](https://data.jsdelivr.com/v1/package/npm/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin/badge)](https://www.jsdelivr.com/package/npm/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin)
 [![](https://img.shields.io/npm/v/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin.svg?style=flat-square)](https://npmjs.org/package/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin)
 [![](https://img.shields.io/npm/dt/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin.svg?style=flat-square)](https://npmjs.org/package/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin)
 [![npm bundle size](https://img.shields.io/bundlephobia/min/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin?style=flat-square)](https://bundlephobia.com/result?p=@joaopaulo.vieira/clappr-tvs-key-mapping-plugin)
