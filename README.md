@@ -30,7 +30,7 @@ Enable/disable log dynamically to check the key code and key name of each remote
 ## Usage
 You can use it from JSDelivr:
 ```
-https://cdn.jsdelivr.net/npm/clappr-tvs-key-mapping-plugin@latest/dist/clappr-tvs-key-mapping-plugin.min.js
+https://cdn.jsdelivr.net/npm/@joaopaulo.vieira/clappr-tvs-key-mapping-plugin@latest/dist/clappr-tvs-key-mapping-plugin.min.js
 ```
 or as an npm package:
 ```properties
