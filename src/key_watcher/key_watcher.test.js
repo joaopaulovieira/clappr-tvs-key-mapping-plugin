@@ -5,15 +5,17 @@ import mockConsole from 'jest-mock-console'
 import { Core, Container, Events, Playback, version } from '@clappr/core'
 import TVsKeyMappingPlugin from './key_watcher'
 
-const setupTest = (options = {}, fullSetup = false) => {
+const setupTest = (options = {}) => {
+  const playback = new Playback(options)
+  options.playback = playback
+  const container = new Container(options)
   const core = new Core(options)
   const plugin = new TVsKeyMappingPlugin(core)
+
   core.addPlugin(plugin)
+  core.activeContainer = container
 
-  const response = { core, plugin }
-  fullSetup && (response.container = new Container({ playerId: 1, playback: new Playback({}) }))
-
-  return response
+  return { plugin, core, container, playback }
 }
 
 const LOG_INFO_HEAD_MESSAGE = '%c[info][tvs_key_mapping]'
@@ -24,34 +26,32 @@ const LOG_WARN_STYLE = 'color: #ff8000;font-weight: bold; font-size: 13px;'
 describe('TVsKeyMappingPlugin', function() {
   beforeEach(() => {
     this.restoreConsole = mockConsole()
-
     jest.clearAllMocks()
-    const response = setupTest({}, true)
-    this.core = response.core
-    this.container = response.container
-    this.core.activeContainer = this.container
-    this.playback = this.container.playback
-    this.plugin = response.plugin
   })
+
   afterEach(() => this.restoreConsole())
 
+  test('register custom event to trigger on core scope', () => {
+    expect(Events.Custom.CORE_SMART_TV_KEY_PRESSED).toBeDefined()
+  })
+
+  test('register custom event to trigger on container scope', () => {
+    expect(Events.Custom.CONTAINER_SMART_TV_KEY_PRESSED).toBeDefined()
+  })
+
   test('is loaded on core plugins array', () => {
-    expect(this.core.getPlugin(this.plugin.name).name).toEqual('tvs_key_mapping')
+    const { plugin, core } = setupTest()
+
+    expect(core.getPlugin(plugin.name).name).toEqual('tvs_key_mapping')
   })
 
   test('is compatible with the latest Clappr core version', () => {
-    expect(this.core.getPlugin(this.plugin.name).supportedVersion).toEqual({ min: version })
+    const { plugin, core } = setupTest()
+
+    expect(core.getPlugin(plugin.name).supportedVersion).toEqual({ min: version })
   })
 
   describe('constructor', () => {
-    test('register custom event to trigger on core scope', () => {
-      expect(Events.Custom.CORE_SMART_TV_KEY_PRESSED).toBeDefined()
-    })
-
-    test('register custom event to trigger on container scope', () => {
-      expect(Events.Custom.CONTAINER_SMART_TV_KEY_PRESSED).toBeDefined()
-    })
-
     test('saves options.tvsKeyMapping.deviceToMap reference internally', () => {
       const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'xpto' } })
 
@@ -66,6 +66,8 @@ describe('TVsKeyMappingPlugin', function() {
     })
 
     test('logs a warn message if options.tvsKeyMapping.deviceToMap is not configured', () => {
+      setupTest()
+
       expect(console.log).toHaveBeenCalledWith(
         LOG_WARN_HEAD_MESSAGE,
         LOG_WARN_STYLE,
@@ -76,7 +78,9 @@ describe('TVsKeyMappingPlugin', function() {
 
   describe('start method', () => {
     test('logs a warn message if device name is not received', () => {
-      this.plugin.start()
+      const { plugin } = setupTest()
+
+      plugin.start()
 
       expect(console.log).toHaveBeenCalledWith(
         LOG_WARN_HEAD_MESSAGE,
@@ -86,7 +90,9 @@ describe('TVsKeyMappingPlugin', function() {
     })
 
     test('logs a warn message if receives a invalid device name', () => {
-      this.plugin.start('xpto')
+      const { plugin } = setupTest()
+
+      plugin.start('xpto')
 
       expect(console.log).toHaveBeenCalledWith(
         LOG_WARN_HEAD_MESSAGE,
@@ -97,31 +103,38 @@ describe('TVsKeyMappingPlugin', function() {
 
     test('updates options.tvsKeyMapping.deviceToMap internal reference with received value', () => {
       const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'xpto' } })
+
       plugin.start('browser')
 
       expect(plugin._deviceName).toEqual('browser')
     })
 
     test('adds _triggerKeyDownEvents method as a callback of keydown event listener on the document', () => {
-      jest.spyOn(this.plugin, '_triggerKeyDownEvents')
-      this.plugin.start('browser')
+      const { plugin } = setupTest()
+      jest.spyOn(plugin, '_triggerKeyDownEvents')
+
+      plugin.start('browser')
       document.dispatchEvent(new Event('keydown'))
 
-      expect(this.plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
+      expect(plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('_triggerKeyDownEvents method', () => {
     test('calls _getKeyNameFromEvent method', () => {
-      jest.spyOn(this.plugin, '_getKeyNameFromEvent')
-      this.plugin._triggerKeyDownEvents(new Event('keydown'))
+      const { plugin } = setupTest()
+      jest.spyOn(plugin, '_getKeyNameFromEvent')
 
-      expect(this.plugin._getKeyNameFromEvent).toHaveBeenCalledTimes(1)
+      plugin._triggerKeyDownEvents(new Event('keydown'))
+
+      expect(plugin._getKeyNameFromEvent).toHaveBeenCalledTimes(1)
     })
 
     test('logs a warn message if _getKeyNameFromEvent method returns one invalid key name', () => {
-      jest.spyOn(this.plugin, '_getKeyNameFromEvent').mockReturnValueOnce(undefined)
-      this.plugin._triggerKeyDownEvents(new Event('keydown'))
+      const { plugin } = setupTest()
+      jest.spyOn(plugin, '_getKeyNameFromEvent').mockReturnValueOnce(undefined)
+
+      plugin._triggerKeyDownEvents(new Event('keydown'))
 
       expect(console.log).toHaveBeenCalledWith(
         LOG_WARN_HEAD_MESSAGE,
@@ -135,6 +148,7 @@ describe('TVsKeyMappingPlugin', function() {
       const cb = jest.fn()
       plugin.listenToOnce(plugin.core, Events.Custom.CORE_SMART_TV_KEY_PRESSED, cb)
       const keyEvent = new KeyboardEvent('keydown', { keyCode: 13 })
+
       plugin._triggerKeyDownEvents(keyEvent)
 
       expect(cb).toHaveBeenCalledTimes(1)
@@ -142,11 +156,11 @@ describe('TVsKeyMappingPlugin', function() {
     })
 
     test('triggers CONTAINER_SMART_TV_KEY_PRESSED custom event at container scope', () => {
-      const { plugin, container } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } }, true)
-      plugin.core.activeContainer = container
+      const { plugin, container } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
       const cb = jest.fn()
       plugin.listenToOnce(container, Events.Custom.CONTAINER_SMART_TV_KEY_PRESSED, cb)
       const keyEvent = new KeyboardEvent('keydown', { keyCode: 13 })
+
       plugin._triggerKeyDownEvents(keyEvent)
 
       expect(cb).toHaveBeenCalledTimes(1)
@@ -154,10 +168,12 @@ describe('TVsKeyMappingPlugin', function() {
     })
 
     test('dont\'t trigger CONTAINER_SMART_TV_KEY_PRESSED custom event if core.activeContainer doesn\'t exists', () => {
-      const { plugin, container } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } }, true)
+      const { plugin, core, container } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
+      core.activeContainer = null
       const cb = jest.fn()
       plugin.listenToOnce(container, Events.Custom.CONTAINER_SMART_TV_KEY_PRESSED, cb)
       const keyEvent = new KeyboardEvent('keydown', { keyCode: 13 })
+
       plugin._triggerKeyDownEvents(keyEvent)
 
       expect(cb).not.toHaveBeenCalled()
@@ -166,7 +182,8 @@ describe('TVsKeyMappingPlugin', function() {
 
   describe('_getKeyNameFromEvent method', () => {
     test('returns one key name accordingly the received keyboard event if is a mapped device', () => {
-      const receivedKeyName1 = this.plugin._getKeyNameFromEvent(new KeyboardEvent('keydown', { keyCode: 13 }))
+      const { plugin } = setupTest()
+      const receivedKeyName1 = plugin._getKeyNameFromEvent(new KeyboardEvent('keydown', { keyCode: 13 }))
 
       expect(receivedKeyName1).toBeUndefined()
 
@@ -184,22 +201,25 @@ describe('TVsKeyMappingPlugin', function() {
 
   describe('stop method', () => {
     test('removes keydown event listener from document', () => {
-      jest.spyOn(this.plugin, '_triggerKeyDownEvents')
-      this.plugin.start('browser')
+      const { plugin } = setupTest()
+      jest.spyOn(plugin, '_triggerKeyDownEvents')
+      plugin.start('browser')
       document.dispatchEvent(new Event('keydown'))
 
-      expect(this.plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
+      expect(plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
 
-      this.plugin.stop()
+      plugin.stop()
       document.dispatchEvent(new Event('keydown'))
 
-      expect(this.plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
+      expect(plugin._triggerKeyDownEvents).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('enableLog method', () => {
     test('logs a warn message if _deviceName is undefined', () => {
-      this.plugin.enableLog()
+      const { plugin } = setupTest()
+
+      plugin.enableLog()
 
       expect(console.log).toHaveBeenCalledWith(
         LOG_WARN_HEAD_MESSAGE,
@@ -211,6 +231,7 @@ describe('TVsKeyMappingPlugin', function() {
     test('adds _onPressedKey method as a callback of keydown event listener on the document', () => {
       const { plugin } = setupTest({ tvsKeyMapping: { deviceToMap: 'browser' } })
       jest.spyOn(plugin, '_onPressedKey')
+
       plugin.enableLog()
       document.dispatchEvent(new Event('keydown'))
 
@@ -258,24 +279,30 @@ describe('TVsKeyMappingPlugin', function() {
 
   describe('destroy method', () => {
     test('is called when Core is destroyed too', () => {
-      jest.spyOn(this.plugin, 'destroy')
-      this.core.destroy()
+      const { plugin, core } = setupTest()
+      jest.spyOn(plugin, 'destroy')
 
-      expect(this.plugin.destroy).toHaveBeenCalled()
+      core.destroy()
+
+      expect(plugin.destroy).toHaveBeenCalled()
     })
 
     test('calls stop method', () => {
-      jest.spyOn(this.plugin, 'stop')
-      this.plugin.destroy()
+      const { plugin } = setupTest()
+      jest.spyOn(plugin, 'stop')
 
-      expect(this.plugin.stop).toHaveBeenCalledTimes(1)
+      plugin.destroy()
+
+      expect(plugin.stop).toHaveBeenCalledTimes(1)
     })
 
     test('calls disableLog method', () => {
-      jest.spyOn(this.plugin, 'disableLog')
-      this.plugin.destroy()
+      const { plugin } = setupTest()
+      jest.spyOn(plugin, 'disableLog')
 
-      expect(this.plugin.disableLog).toHaveBeenCalledTimes(1)
+      plugin.destroy()
+
+      expect(plugin.disableLog).toHaveBeenCalledTimes(1)
     })
   })
 })
