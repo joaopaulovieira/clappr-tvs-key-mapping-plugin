@@ -1,14 +1,15 @@
 import { CorePlugin, Events, Log, version } from '@clappr/core'
 import { KeyMap } from '../keys_mapping/map'
 
+Events.register('CORE_SMART_TV_KEY_PRESSED')
+Events.register('CONTAINER_SMART_TV_KEY_PRESSED')
+
 export default class TVsKeyMappingPlugin extends CorePlugin {
   get name() { return 'tvs_key_mapping' }
 
   get supportedVersion() { return { min: version } }
 
   constructor(core) {
-    Events.register('CORE_SMART_TV_KEY_PRESSED')
-    Events.register('CONTAINER_SMART_TV_KEY_PRESSED')
     super(core)
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
